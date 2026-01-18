@@ -13,48 +13,61 @@
         background: transparent;
       }
 
-      #music-btn {
-        position: absolute;
-        bottom: 16px;
-        right: 16px;
-        background: rgba(255, 182, 193, 0.9);
+      /* ===== BOTÓN MÚSICA FLOTANTE ===== */
+      .music-btn {
+        position: fixed; /* 🔥 CLAVE */
+        top: 20px;
+        right: 20px;
+        background: #d9a7ff;
+        color: #fff;
         border: none;
-        border-radius: 24px;
-        padding: 10px 14px;
-        font-size: 14px;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        font-size: 22px;
         cursor: pointer;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        z-index: 99999; /* 🔥 CLAVE */
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
+      .music-btn.paused {
+        opacity: 0.7;
+      }
+
+      /* ===== CARROUSEL ===== */
       .carousel {
         width: 100%;
-        max-width: 800px;
-        margin: auto;
+        max-width: 900px;
+        margin: 40px auto;
         overflow: hidden;
-        border-radius: 16px;
+        border-radius: 20px;
       }
 
       .slides {
         display: flex;
-        gap: 12px;
+        transition: transform 0.8s ease-in-out;
       }
 
       .slide {
-        flex: 0 0 calc(100% / 3);
+        flex: 0 0 25%;
+        padding: 4px;
+        box-sizing: border-box;
         opacity: 0;
-        transform: translateX(30px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        transition: opacity 1s ease;
       }
 
       .slide.active {
         opacity: 1;
-        transform: translateX(0);
       }
 
       .slides img {
         width: 100%;
         height: auto;
-        object-fit: contain;
-        border-radius: 12px;
+        border-radius: 14px;
+        display: block;
       }
 
       /* Tablet */
@@ -78,8 +91,8 @@
       <source src="./public/audio/LaPerla.mp3" type="audio/mpeg" />
     </audio>
 
-    <!-- Botón -->
-    <button id="music-btn">🎵 Activar música</button>
+    <!-- 🎵 BOTÓN FLOTANTE -->
+    <button class="music-btn paused" id="musicBtn">▶ Activar música🎵</button>
 
     <!--Carrusel -->
     <div class="carousel">
@@ -149,15 +162,17 @@
     <!-- JS Música -->
     <script>
       const audio = document.getElementById("bg-music");
-      const btn = document.getElementById("music-btn");
+      const btn = document.getElementById("musicBtn");
 
       btn.addEventListener("click", () => {
         if (audio.paused) {
           audio.play();
-          btn.textContent = "🔇 Pausar música";
+          btn.textContent = "❚❚ Pausar música";
+          btn.classList.remove("paused");
         } else {
           audio.pause();
-          btn.textContent = "🎵 Activar música";
+          btn.textContent = "▶ Activar música🎵";
+          btn.classList.add("paused");
         }
       });
     </script>
