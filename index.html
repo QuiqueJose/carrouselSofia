@@ -65,6 +65,12 @@
         });
 
         let index = 0;
+	if (slides.children.length > 1) {
+	  setInterval(() => {
+	    index = (index + 1) % slides.children.length;
+	    slides.style.transform = `translateX(-${index * 100}%)`;
+	  }, 4000);
+	}
         setInterval(() => {
           index = (index + 1) % slides.children.length;
           slides.style.transform = `translateX(-${index * 100}%)`;
