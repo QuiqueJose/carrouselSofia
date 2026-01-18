@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Música Sofía</title>
+
+    <style>
+      body {
+        margin: 0;
+        background: transparent;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Botón flotante */
+      .music-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: none;
+        background: #d9a7ff;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        z-index: 99999;
+      }
+
+      .music-btn.paused {
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- AUDIO -->
+    <audio id="music" preload="auto" loop>
+      <source src="./public/audio/LaPerla.mp3" type="audio/mpeg" />
+      Tu navegador no soporta audio.
+    </audio>
+
+    <!-- BOTÓN -->
+    <button id="musicBtn" class="music-btn paused">▶</button>
+
+    <script>
+      const audio = document.getElementById("music");
+      const btn = document.getElementById("musicBtn");
+
+      btn.addEventListener("click", () => {
+        if (audio.paused) {
+          audio
+            .play()
+            .then(() => {
+              btn.textContent = "❚❚";
+              btn.classList.remove("paused");
+            })
+            .catch((err) => {
+              console.error("Error al reproducir audio:", err);
+            });
+        } else {
+          audio.pause();
+          btn.textContent = "▶";
+          btn.classList.add("paused");
+        }
+      });
+    </script>
+  </body>
+</html>
