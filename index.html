@@ -24,14 +24,11 @@
 
       .slides {
         display: flex;
-        transition: transform 0.6s ease-in-out;
-        will-change: transform;
+        gap: 8px;
       }
 
       .slide {
         flex: 0 0 33.3333%;
-        padding: 4px;
-        box-sizing: border-box;
       }
 
       .slide img {
@@ -73,18 +70,6 @@
 
       const slidesContainer = document.getElementById("slides");
 
-      let slideWidth = 0;
-      let index = 0;
-
-      function updateSlideWidth() {
-        const firstSlide = document.querySelector(".slide");
-        if (firstSlide) {
-          slideWidth = firstSlide.offsetWidth;
-        }
-      }
-
-      window.addEventListener("resize", updateSlideWidth);
-
       fetch(
         `https://www.googleapis.com/drive/v3/files?q='${FOLDER_ID}'+in+parents+and+mimeType+contains+'image/'&key=${API_KEY}&fields=files(id,name)`
       )
@@ -102,29 +87,24 @@
             slidesContainer.appendChild(slide);
           });
 
-          // 🔁 duplicamos slides para loop infinito
-          slidesContainer.innerHTML += slidesContainer.innerHTML;
-
-          updateSlideWidth();
-
-          setInterval(() => {
-            index++;
-            slidesContainer.style.transform = `translateX(-${
-              index * slideWidth
-            }px)`;
-
-            // reinicio invisible
-            if (index >= slidesContainer.children.length / 2) {
-              setTimeout(() => {
-                slidesContainer.style.transition = "none";
-                index = 0;
-                slidesContainer.style.transform = "translateX(0)";
-                slidesContainer.offsetHeight; // reflow
-                slidesContainer.style.transition = "transform 0.6s ease-in-out";
-              }, 700);
-            }
-          }, 3000);
+          startCarousel();
         });
+
+      function startCarousel() {
+        setInterval(() => {
+          const firstSlide = slidesContainer.firstElementChild;
+          const slideWidth = firstSlide.offsetWidth + 8; // gap
+
+          slidesContainer.style.transition = "transform 0.6s ease-in-out";
+          slidesContainer.style.transform = `translateX(-${slideWidth}px)`;
+
+          setTimeout(() => {
+            slidesContainer.style.transition = "none";
+            slidesContainer.style.transform = "translateX(0)";
+            slidesContainer.appendChild(firstSlide);
+          }, 600);
+        }, 3000);
+      }
     </script>
   </body>
 </html>
